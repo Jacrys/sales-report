@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// Summary description for Class1
+/// </summary>
+[Table(Name = "Sales.Customer")]
+public class Customer
+{
+    public Customer() {
+        this._Person = new EntityRef<Person>();
+        this._Stores = new EntitySet<Store>();
+    }
+
+    private int _CustomerID;
+    [Column(IsPrimaryKey = true, Storage = "_CustomerID", CanBeNull = false, DbType = "int")]
+    public int CustomerID
+    {
+        get 
+        {
+            return this._CustomerID;
+        }
+    }
+
+    private int _StoreID;
+    [Column(Storage = "_StoreID", CanBeNull = false, DbType = "int")]
+    public int StoreID
+    {
+        get { return this._StoreID; }
+    }
+
+    private EntitySet<Store> _Stores;
+    [Association(Storage = "_Stores", ThisKey = "StoreID", OtherKey = "StoreID", IsForeignKey = true)]
+    public EntitySet<Store> Stores
+    {
+        get { return this._Stores; }
+    }
+
+    private int _PersonID;
+    [Column(Storage = "_PersonID", CanBeNull = false, DbType = "int")]
+    public int PersonID
+    {
+        get { return this._PersonID; }
+    }
+
+    private EntityRef<Person> _Person;
+    [Association(Storage = "_Person", ThisKey = "PersonID", OtherKey= "PersonID", IsForeignKey = true)]
+    public Person Person
+    {
+        get { return this._Person.Entity; }
+        set { this._Person.Entity = value; }
+    }
+}

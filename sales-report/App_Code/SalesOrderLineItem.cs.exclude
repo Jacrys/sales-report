@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// Summary description for Class1
+/// </summary>
+[Table(Name = "Sales.SalesOrderDetail")]
+public class SalesOrderLineItem
+{
+    private EntityRef<SalesOrder> _SalesOrder;
+    public SalesOrderLineItem()
+    {
+        this._SalesOrder = new EntityRef<SalesOrder>();
+    }
+
+    [Association(Storage = "_SalesOrder", OtherKey = "SalesOrderID", ThisKey = "SalesOrderID", IsForeignKey = true)]
+    public SalesOrder SalesOrder
+    {
+        get { return this._SalesOrder.Entity; }
+        set { this._SalesOrder.Entity = value; }
+    }
+
+    private short _OrderQty;
+    [Column(Name = "OrderQty", CanBeNull = false, DbType = "smallint")]
+    public short OrderQty
+    {
+        get
+        {
+            return this._OrderQty;
+        }
+    }
+
+    private decimal _UnitPrice;
+    [Column(Name = "UnitPrice", CanBeNull = false, DbType = "money")]
+    public decimal UnitPrice
+    {
+        get
+        {
+            return this._UnitPrice;
+        }
+    }
+
+    private decimal _UnitPriceDiscount;
+    [Column(Name = "UnitPriceDiscount", CanBeNull = false, DbType = "money")]
+    public decimal UnitPriceDiscount
+    {
+        get
+        {
+            return this._UnitPriceDiscount;
+        }
+    }
+
+    public decimal UnitNet
+    {
+        get
+        {
+            return this._UnitPrice - this._UnitPriceDiscount;
+        }
+    }
+
+    private decimal _LineTotal;
+    [Column(Name = "LineTotal", CanBeNull = false, DbType = "money", IsDbGenerated = true)]
+    public decimal AccountNumber
+    {
+        get
+        {
+            return this._LineTotal;
+        }
+    }
+
+    private EntityRef<Product> _Product;
+    [Association(Storage = "_Product", IsForeignKey = true, OtherKey = "ProductID", ThisKey = "ProductID")]
+    private Product Product
+    {
+        get
+        {
+            return this._Product.Entity;
+        }
+        set
+        {
+            this._Product.Entity = value;
+        }
+    }
+
+    private int _ProductID;
+    [Column(Name = "ProductID", CanBeNull = false, DbType = "int")]
+    public int ProductID
+    {
+        get
+        {
+            return this._ProductID;
+        }
+        set
+        {
+            this._ProductID = value;
+        }
+    }
+}

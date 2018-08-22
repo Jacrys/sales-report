@@ -1,0 +1,67 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Data.SqlTypes;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// Summary description for Person
+/// </summary>
+[Table (Name = "Person.Person")]
+public class Person
+{
+    private int _BusinessEntityID;
+    [Column(IsPrimaryKey = true, Storage = "_BusinessEntityID", CanBeNull = false, DbType = "int")]
+    public int PersonID
+    {
+        get
+        {
+            return this._BusinessEntityID;
+        }
+    }
+
+    private string _firstName;
+    [Column(CanBeNull = false, Storage = "_firstName", DbType = "nvarchar(50)")]
+    public string FirstName
+    {
+        get
+        {
+            return this._firstName;
+        }
+    }
+
+    private string _lastName;
+    [Column(CanBeNull = false, Storage = "_lastName", DbType = "nvarchar(50)")]
+    public string LastName
+    {
+        get
+        {
+            return this._lastName;
+        }
+    }
+
+    public string Name
+    {
+        get
+        {
+            return this._firstName + " " + this._lastName;
+        }
+    }
+
+    
+        
+    public Person ()
+    {
+        this._Customer = new EntityRef<Customer>();
+    } 
+
+    private EntityRef<Customer> _Customer;
+    [Association(Storage = "_Customers", OtherKey = "PersonID", ThisKey = "PersonID")]
+    public Customer Customer
+    {
+        get { return this._Customer.Entity; }
+        set { this._Customer.Entity = value; }
+    }
+}

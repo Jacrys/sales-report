@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// Summary description for Product
+/// </summary>
+[Table(Name = "Production.Product")]
+public class Product
+{
+    private EntityRef<SalesOrderLineItem> _LineItem;
+    [Association(Storage = "_LineItem", OtherKey = "ProductID", ThisKey = "ProductID")]
+    private SalesOrderLineItem LineItem
+    {
+        get
+        {
+            return this._LineItem.Entity;
+        }
+        set
+        {
+            this._LineItem.Entity = value;
+        }
+    }
+
+    private int _ProductID;
+    [Column(Name = "ProductID", CanBeNull = false, DbType = "int")]
+    public int ProductID
+    {
+        get
+        {
+            return this._ProductID;
+        }
+        set
+        {
+            this._ProductID = value;
+        }
+    }
+
+    private string _ProductNumber;
+    [Column(Name = "ProductNumber", CanBeNull = false, DbType = "varchar(25)", Storage = "_ProductNumber")]
+    public string ProductNumber
+    {
+        get
+        {
+            return this._ProductNumber;
+        }
+        set
+        {
+            this._ProductNumber = value;
+        }
+    }
+}

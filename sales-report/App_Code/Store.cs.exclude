@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// Summary description for Class1
+/// </summary>
+[Table(Name ="Sales.Store")]
+public class Store
+{
+    private EntitySet<Customer> _Customers;
+    public Store()
+    {
+        this._Customers = new EntitySet<Customer>();
+    }
+
+    [Association(Storage = "_Customers", OtherKey = "StoreID")]
+    public EntitySet<Customer> Customers
+    {
+        get { return this._Customers; }
+        set { this._Customers.Assign(value); }
+    }
+
+    private string _name;
+    [Column(Name="Name",CanBeNull = false, DbType = "nvarchar(50)")]
+    public string Name
+    {
+        get
+        {
+            return this._name;
+        }
+    }
+
+    private int _BusinessEntityID;
+    [Column(Name = "BusinessEntityID", Storage = "_BusinessEntityID", IsPrimaryKey = true, DbType ="int")]
+    public int StoreID
+    {
+        get
+        {
+            return this._BusinessEntityID;
+        }
+    }
+}

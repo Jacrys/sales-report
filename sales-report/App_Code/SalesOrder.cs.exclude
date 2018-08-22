@@ -1,0 +1,112 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using System.Linq;
+using System.Web;
+
+/// <summary>
+/// Summary description for Class1
+/// </summary>
+[Table(Name = "Sales.SalesOrderHeader")]
+public class SalesOrder
+{
+    private EntityRef<Customer> _Customer;
+    public SalesOrder()
+    {
+        this._Customer = new EntityRef<Customer>();
+        this._LineItems = new EntitySet<SalesOrderLineItem>();
+    }
+
+    [Association(Storage = "_Customers", OtherKey = "CustomerID", ThisKey = "CustomerID", IsForeignKey = true)]
+    public Customer Customer
+    {
+        get { return this._Customer.Entity; }
+        set { this._Customer.Entity = value; }
+    }
+
+    private DateTime _OrderDate;
+    [Column(Name = "OrderDate", CanBeNull = false, DbType = "datetime")]
+    public DateTime OrderDate
+    {
+        get
+        {
+            return this._OrderDate;
+        }
+    }
+
+    private DateTime _DueDate;
+    [Column(Name = "DueDate", CanBeNull = false, DbType = "datetime")]
+    public DateTime DueDate
+    {
+        get
+        {
+            return this._DueDate;
+        }
+    }
+
+    private double _TotalDue;
+    [Column(Name = "TotalDue", CanBeNull = false, DbType = "money")]
+    public double TotalDue
+    {
+        get
+        {
+            return this._TotalDue;
+        }
+    }
+
+    private string _AccountNumber;
+    [Column(Name = "AccountNumber", CanBeNull = false, DbType = "nvarchar(15)", IsDbGenerated = true)]
+    public string AccountNumber
+    {
+        get
+        {
+            return this._AccountNumber;
+        }
+    }
+
+    private string _PurchaseOrderNumber;
+    [Column(Name = "PurchaseOrderNumber", CanBeNull = false, DbType = "nvarchar(25)", IsDbGenerated = true)]
+    public string PurchaseOrderNumber
+    {
+        get
+        {
+            return this._PurchaseOrderNumber;
+        }
+    }
+
+    private string _SalesOrderNumber;
+    [Column(Name = "SalesOrderNumber", CanBeNull = false, DbType = "nvarchar(25)", IsDbGenerated = true)]
+    public string SalesOrderNumber
+    {
+        get
+        {
+            return this._SalesOrderNumber;
+        }
+    }
+
+    private EntitySet<SalesOrderLineItem> _LineItems;
+    [Association(Storage ="_LineItems", OtherKey = "SalesOrderID", ThisKey = "SalesOrderID")]
+    public EntitySet<SalesOrderLineItem> LineItems
+    {
+        get
+        {
+            return this._LineItems;
+        }
+        set
+        {
+            this._LineItems.Assign(value);
+        }
+    }
+
+    private int _SalesOrderID;
+    [Column(Name = "SalesOrderID", CanBeNull = false, DbType = "int", IsDbGenerated = true)]
+    public int SalesOrderID
+    {
+        get
+        {
+            return this._SalesOrderID;
+        }
+    }
+
+}
